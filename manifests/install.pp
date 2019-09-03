@@ -131,11 +131,11 @@ class graphite::install inherits graphite::params {
     $gweb = "\"graphite_web-\"*\"-py${::graphite::params::pyver}.egg-info\""
     create_resources('exec', {
       'carbon_hack' => {
-        command => "ln -s \"${::graphite::base_dir_REAL}/lib/\"${carbon} \"${::graphite::params::libpath}/\""
+        command => "ln -sf \"${::graphite::base_dir_REAL}/lib/\"${carbon} \"${::graphite::params::libpath}/\""
       }
       ,
       'gweb_hack'   => {
-        command => "ln -s \"${::graphite::base_dir_REAL}/webapp/\"${gweb} \"${::graphite::params::libpath}/\""
+        command => "ln -sf \"${::graphite::base_dir_REAL}/webapp/\"${gweb} \"${::graphite::params::libpath}/\""
       }
       ,
     }
