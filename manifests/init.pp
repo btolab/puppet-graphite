@@ -123,6 +123,18 @@
 #     }
 #   }
 #   (matches the exammple configuration from graphite 0.9.12)
+# [*gr_graphite_url*]
+#   default http://{gr_web_servername}:{gr_web_server_port}
+# [*gr_enable_tags*]
+#   default true
+# [*gr_tag_update_interval*]
+#   default 100
+# [*gr_tag_hash_filenames*]
+#   default true
+# [*gr_tag_batch_size*]
+#   default 100
+# [*gr_tag_queue_size*]
+#   default 10000
 # [*gr_web_server*]
 #   The web server to use.
 #   Valid values are 'apache', 'nginx', 'wsgionly' and 'none'.
@@ -625,6 +637,12 @@ class graphite (
     }
   }
   ,
+  $gr_graphite_url                        = undef,
+  $gr_enable_tags                         = true,
+  $gr_tag_update_interval                 = 100,
+  $gr_tag_hash_filenames                  = true,
+  $gr_tag_batch_size                      = 100,
+  $gr_tag_queue_size                      = 10000,
   $gr_web_server                          = 'apache',
   $gr_web_server_port                     = 80,
   $gr_web_server_port_https               = 443,
@@ -824,6 +842,8 @@ class graphite (
   validate_integer($gr_web_server_port)
   validate_integer($gr_web_server_port_https)
 
+  $default_graphite_url = sprintf('http://%s:%d', $gr_web_servername, $gr_web_server_port)
+
   $base_dir_REAL                    = $gr_base_dir
   $storage_dir_REAL                 = pick($gr_storage_dir,            "${base_dir_REAL}/storage")
   $local_data_dir_REAL              = pick($gr_local_data_dir,         "${storage_dir_REAL}/whisper")
@@ -836,6 +856,7 @@ class graphite (
   $graphiteweb_webapp_dir_REAL      = pick($gr_graphiteweb_webapp_dir, "${base_dir_REAL}/webapp")
   $graphiteweb_storage_dir_REAL     = $gr_graphiteweb_storage_dir
   $graphiteweb_install_lib_dir_REAL = pick($gr_graphiteweb_install_lib_dir, "${graphiteweb_webapp_dir_REAL}/graphite")
+  $graphite_url_REAL                = pick($gr_graphite_url,           "${default_graphite_url}")
 
   # Check for Graphite version 1 and above
   $version_1 = versioncmp($gr_graphite_ver, '1.0')
