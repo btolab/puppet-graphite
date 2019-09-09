@@ -253,6 +253,9 @@
 # [*gr_aggregator_log_listener_connections*]
 #   Logs successful connections
 #   Default is 'True' (String)
+# [*gr_log_aggregator_misses*]
+#   Logs when metric has no aggregation rule.
+#   Default is false
 # [*gr_aggregator_forward_all*]
 #   Default is 'True' (String).
 # [*gr_aggregator_destinations*]
@@ -574,6 +577,7 @@ class graphite (
   $gr_pickle_receiver_interface           = '0.0.0.0',
   $gr_pickle_receiver_port                = 2004,
   $gr_log_listener_connections            = 'True',
+  $gr_log_aggregator_misses               = false,
   $gr_use_insecure_unpickler              = 'False',
   $gr_use_whitelist                       = 'False',
   $gr_whitelist                           = ['.*'],
@@ -810,6 +814,7 @@ class graphite (
   validate_bool($gr_manage_python_packages)
   validate_bool($gr_disable_webapp_cache)
   validate_bool($gr_base_dir_managed_externally)
+  validate_bool($gr_log_aggregator_misses)
 
   if $gr_apache_port or $gr_apache_port_https {
     fail('$gr_apache_port and $gr_apache_port_https are deprecated in favour of $gr_web_server_port and $gr_web_server_port_https')
